@@ -1,0 +1,78 @@
+classifier: !!python/object:sklearn.ensemble._forest.RandomForestClassifier
+  _sklearn_version: 1.2.2
+  base_estimator: deprecated
+  bootstrap: true
+  ccp_alpha: 0.0
+  class_weight: &id002
+    0: 100
+    1: 1
+  criterion: gini
+  estimator: !!python/object:sklearn.tree._classes.DecisionTreeClassifier
+    _sklearn_version: 1.2.2
+    ccp_alpha: 0.0
+    class_weight: null
+    criterion: gini
+    max_depth: null
+    max_features: null
+    max_leaf_nodes: null
+    min_impurity_decrease: 0.0
+    min_samples_leaf: 1
+    min_samples_split: 2
+    min_weight_fraction_leaf: 0.0
+    random_state: null
+    splitter: best
+  estimator_params: !!python/tuple
+  - criterion
+  - max_depth
+  - min_samples_split
+  - min_samples_leaf
+  - min_weight_fraction_leaf
+  - max_features
+  - max_leaf_nodes
+  - min_impurity_decrease
+  - random_state
+  - ccp_alpha
+  max_depth: &id003 !!python/object/apply:numpy.core.multiarray.scalar
+  - &id001 !!python/object/apply:numpy.dtype
+    args:
+    - i4
+    - false
+    - true
+    state: !!python/tuple
+    - 3
+    - <
+    - null
+    - null
+    - null
+    - -1
+    - -1
+    - 0
+  - !!binary |
+    BwAAAA==
+  max_features: &id004 !!python/object/apply:numpy.core.multiarray.scalar
+  - *id001
+  - !!binary |
+    AwAAAA==
+  max_leaf_nodes: null
+  max_samples: null
+  min_impurity_decrease: 0.0
+  min_samples_leaf: &id005 !!python/object/apply:numpy.core.multiarray.scalar
+  - *id001
+  - !!binary |
+    BwAAAA==
+  min_samples_split: 2
+  min_weight_fraction_leaf: 0.0
+  n_estimators: 100
+  n_jobs: null
+  oob_score: false
+  random_state: null
+  verbose: 0
+  warm_start: false
+classifier__class_weight: *id002
+classifier__max_depth: *id003
+classifier__max_features: *id004
+classifier__min_samples_leaf: *id005
+selectkbest__k: !!python/object/apply:numpy.core.multiarray.scalar
+- *id001
+- !!binary |
+  BAAAAA==
