@@ -9,8 +9,14 @@ import pickle
 from functions import *
 import yaml
 
-# Leer el Dataframe
-df1 = pd.read_csv("../data/processed/processed.csv")
+segmentos = []
+
+# Leer los archivos CSV segmentados y almacenarlos en la lista
+for i in range(0,4):
+    segmento = pd.read_csv(f'..data/processed/segmento_{i+1}.csv')
+    segmentos.append(segmento)
+# Concatenar los DataFrames de los segmentos en uno solo
+df1 = pd.concat(segmentos, ignore_index=True)
 
 # Crear las variables para features y target
 X = df1[['amt', 'city_pop',
@@ -48,8 +54,12 @@ X_train_und, X_test_und, y_train_und, y_test_und = train_test_split(X_under,
 # Crear un nuevo DataFrame combinando X_test y y_test
 train_data = pd.concat([X_train_und, y_train_und], axis=1)
 
-# Guardar el archivo del train
-train_data.to_csv("../data/train/train.csv")
+# Crear un nuevo DataFrame combinando X_test y y_test
+train_data = pd.concat([X_train_und, y_train_und], axis=1)
+
+segmentos = np.array_split(df1, 2)
+for i, segmento in enumerate(segmentos):
+    segmento.to_csv(f'..data/train/segmento_{i+1}.csv', index=False)
 
 # Definir el pipeline
 pipe = Pipeline(steps=[

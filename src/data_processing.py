@@ -3,9 +3,16 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from geopy.distance import geodesic
 import functions as fc
+import numpy as np
 
-# Leer el archivo CSV
-df1 = pd.read_csv("../data/raw/fraudTrain.csv", index_col=0)
+segmentos = []
+
+# Leer los archivos CSV segmentados y almacenarlos en la lista
+for i in range(0,4):
+    segmento = pd.read_csv(f'..data/raw/segmento_{i+1}.csv')
+    segmentos.append(segmento)
+# Concatenar los DataFrames de los segmentos en uno solo
+df1 = pd.concat(segmentos, ignore_index=True)
 
 # Convertir la columna "dob" a tipo de dato datetime
 df1["dob"] = pd.to_datetime(df1["dob"])
@@ -57,7 +64,11 @@ df1["fraudes_por_hora"] = df1["hour"].map(valor_hora)
 # Eliminar las columnas no deseadas del DataFrame
 df1.drop(['trans_date_trans_time', 'cc_num', 'merchant', 'first', 'last', 'street', 'city', 'zip', 'lat', 'long', 'job', 'dob', 'trans_num', 'merch_lat', 'merch_long'], inplace=True, axis=1)
 
-# Guardar el archivo procesado
-df1.to_csv("../data/processed/processed.csv")
+segmentos = []
+
+segmentos = np.array_split(df1, 4)
+
+for i, segmento in enumerate(segmentos):
+    segmento.to_csv(f'segmento_{i+1}.csv', index=False)
 
 print("Done")
