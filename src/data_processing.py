@@ -9,7 +9,7 @@ segmentos = []
 
 # Leer los archivos CSV segmentados y almacenarlos en la lista
 for i in range(0,4):
-    segmento = pd.read_csv(f'..data/raw/segmento_{i+1}.csv')
+    segmento = pd.read_csv(f'../data/raw/segmento_{i+1}.csv')
     segmentos.append(segmento)
 # Concatenar los DataFrames de los segmentos en uno solo
 df1 = pd.concat(segmentos, ignore_index=True)
@@ -69,6 +69,6 @@ segmentos = []
 segmentos = np.array_split(df1, 4)
 
 for i, segmento in enumerate(segmentos):
-    segmento.to_csv(f'segmento_{i+1}.csv', index=False)
+    segmento.to_csv(f'../data/processed/segmento_{i+1}.csv', index=False)
 
 print("Done")

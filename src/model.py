@@ -13,7 +13,7 @@ segmentos = []
 
 # Leer los archivos CSV segmentados y almacenarlos en la lista
 for i in range(0,4):
-    segmento = pd.read_csv(f'..data/processed/segmento_{i+1}.csv')
+    segmento = pd.read_csv(f'../data/processed/segmento_{i+1}.csv')
     segmentos.append(segmento)
 # Concatenar los DataFrames de los segmentos en uno solo
 df1 = pd.concat(segmentos, ignore_index=True)
@@ -59,7 +59,7 @@ train_data = pd.concat([X_train_und, y_train_und], axis=1)
 
 segmentos = np.array_split(df1, 2)
 for i, segmento in enumerate(segmentos):
-    segmento.to_csv(f'..data/train/segmento_{i+1}.csv', index=False)
+    segmento.to_csv(f'../data/train/segmento_{i+1}.csv', index=False)
 
 # Definir el pipeline
 pipe = Pipeline(steps=[
@@ -84,7 +84,7 @@ clf = GridSearchCV(estimator=pipe, param_grid=rf_params, cv=3, scoring="roc_auc"
 clf.fit(X_train_und, y_train_und)
 
 # Para escribir el archivo pickle
-with open('../models/my_model.pkl', 'wb') as archivo_salida:
+with open('../models/trained_model.pkl', 'wb') as archivo_salida:
     pickle.dump(clf.best_estimator_, archivo_salida)
 
 # Para escribir el archivo YAML
