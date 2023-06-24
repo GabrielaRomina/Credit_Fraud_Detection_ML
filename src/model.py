@@ -12,16 +12,16 @@ import yaml
 segmentos = []
 
 # Leer los archivos CSV segmentados y almacenarlos en la lista
-for i in range(0,4):
+for i in range(0,3):
     segmento = pd.read_csv(f'../data/processed/segmento_{i+1}.csv')
     segmentos.append(segmento)
 # Concatenar los DataFrames de los segmentos en uno solo
 df1 = pd.concat(segmentos, ignore_index=True)
 
 # Crear las variables para features y target
-X = df1[['amt', 'city_pop',
-       'age', 'distancia', 'day_of_week',
-       'fraudes_por_Categoria', 'fraudes_por_estado', 'fraudes_por_hora']]
+X = df1[['amt', 'city_pop', 'distancia', 'fraudes_por_Categoria',
+       'fraudes_por_estado', 'fraudes_por_edad', 'fraudes_por_hora',
+       'fraudes_por_día']]
 y = df1['is_fraud']
 
 # Separamos una muestra del DataFrame para probar el modelo
@@ -50,9 +50,6 @@ X_train_und, X_test_und, y_train_und, y_test_und = train_test_split(X_under,
                                                    y_under,
                                                    test_size = 0.2,
                                                    random_state=0)
-
-# Crear un nuevo DataFrame combinando X_test y y_test
-train_data = pd.concat([X_train_und, y_train_und], axis=1)
 
 # Crear un nuevo DataFrame combinando X_test y y_test
 train_data = pd.concat([X_train_und, y_train_und], axis=1)
