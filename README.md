@@ -12,6 +12,8 @@ Se han evaluado varios algoritmos de clasificación para determinar cuál ofrece
 
 Puesto que se partía de una base de datos no balanceada (solo un 0.6% de los datos correspondía a fraudes), se ha puesto especial énfasis en tratar el problema a partir de datos no balanceados, utilizando diferentes técnicas de undersampling y también parámetros específicos de los modelos para tratar con datos no balanceados.
 
+Se han entrenado 8 tipos de modelos con diferentes hiperparametrizaciones, de los cuáles 7 son modelos supervisados, uno de ellos basados en redes neuronales y otro semisupervisado, al que se le ha aplicado PCA.
+
 # Uso del modelo
 Una vez entrenado, el modelo puede utilizarse para predecir si una nueva transacción es fraudulenta o legítima. Se proporciona un script de ejemplo que carga el modelo entrenado y realiza predicciones en base a una nueva transacción. También se incluye un conjunto de datos de prueba para que puedas evaluar el rendimiento del modelo en datos no vistos previamente.
 
