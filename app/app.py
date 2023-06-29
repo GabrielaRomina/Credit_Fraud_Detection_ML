@@ -65,6 +65,7 @@ y_test = df['is_fraud']
 
 # Interfaz de usuario con Streamlit
 st.title("Detección de fraude con tarjeta de crédito")
+st.image("image/Credit-Card-Fraud-investigation.jpg")
 
 menu = st.sidebar.selectbox("Seleccionamos la página", ['Home','Análisis de datos exploratorio', 'Análisis procesamiento de datos', 'Modelo de predicción', 'Todos los modelos de predicción', 'Evaluación de modelos de predicción'])
 
@@ -74,6 +75,9 @@ if menu == "Home":
 
 
 if menu == "Análisis de datos exploratorio":
+    st.markdown('Muestra del dataset con el que se ha trabajado')
+    st.dataframe(df1.head())
+    
     tab1, tab2 = st.tabs(['Ratio de fraudes','Correlación variables originales'])
     with tab1:
         fig = px.histogram(df1, x="is_fraud", color="is_fraud", color_discrete_map={0: "#34D399", 1: "#EF4444"},
