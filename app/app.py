@@ -54,6 +54,14 @@ fraud_data = df1[df1['is_fraud'] == 1]  # Datos de fraudes
 
 with open('../models/Model4/trained_model.pkl', 'rb') as f:
         modelo_cargado = pickle.load(f)
+# Leer el archivo CSV de prueba
+df = pd.read_csv("../data/test/test.csv")
+
+# Obtener las características de prueba (X_test) y las etiquetas de prueba (y_test)
+X_test = df[['amt', 'city_pop', 'distancia', 'fraudes_por_Categoria',
+    'fraudes_por_estado', 'fraudes_por_edad', 'fraudes_por_hora',
+    'fraudes_por_día']]
+y_test = df['is_fraud']
 
 # Interfaz de usuario con Streamlit
 st.title("Detección de fraude con tarjeta de crédito")
@@ -504,7 +512,7 @@ if menu == 'Todos los modelos de predicción':
 
     # Crear una lista de nombres de tipos de modelo
     model_types_list = [model_types[folder] for folder in model_folders]
-
+    
     # Selector de tipo de modelo
     selected_model_type = st.selectbox("Seleccione el tipo de modelo:", model_types_list)
 
@@ -601,15 +609,7 @@ if menu == 'Todos los modelos de predicción':
     df = pd.read_csv("city_pop.csv")
     st.dataframe(df)
 
-if menu == 'Evaluación modelos de predicción':
-    # Leer el archivo CSV de prueba
-    df = pd.read_csv("../data/test/test.csv")
-
-    # Obtener las características de prueba (X_test) y las etiquetas de prueba (y_test)
-    X_test = df[['amt', 'city_pop', 'distancia', 'fraudes_por_Categoria',
-        'fraudes_por_estado', 'fraudes_por_edad', 'fraudes_por_hora',
-        'fraudes_por_día']]
-    y_test = df['is_fraud']
+if menu == 'Evaluación de modelos de predicción':
     # Obtener la ruta absoluta de la carpeta padre
     parent_folder = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
 
@@ -646,15 +646,24 @@ if menu == 'Evaluación modelos de predicción':
     else:
         modelo_cargado = load_model(model_path)
 
-    # Realizar predicciones utilizando el modelo cargado
+    # Leer el archivo CSV de prueba
+    df = pd.read_csv("../data/test/test.csv")
+
+    # Obtener las características de prueba (X_test) y las etiquetas de prueba (y_test)
+    X_test = df[['amt', 'city_pop', 'distancia', 'fraudes_por_Categoria',
+        'fraudes_por_estado', 'fraudes_por_edad', 'fraudes_por_hora',
+        'fraudes_por_día']]
+    y_test = df['is_fraud']
+
+    # Realizar la predicción utilizando el modelo cargado
     predictions = modelo_cargado.predict(X_test)
 
     # Redondear la predicción si es un modelo Sequential de Keras (Model8)
     if selected_model_folder == "Model8":
-        predictions = np.round(resultado_prediccion)
+        predictions = np.round(predictions)
 
-    # Calcular la matriz de confusión
-    c_matrix = confusion_matrix(y_test, predictions)
+        # Calcular la matriz de confusión
+    c_matrix = confusion_matrix(y_test, predictions, normalize='true')
     st.write("Matriz de confusión:")
     st.dataframe(pd.DataFrame(c_matrix))
 
