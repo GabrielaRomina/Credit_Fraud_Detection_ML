@@ -5,7 +5,7 @@ plotly
 matplotlib
 seaborn
 folium
-streamlit-folium
+streamlit_folium
 xgboost
 joblib
 keras
