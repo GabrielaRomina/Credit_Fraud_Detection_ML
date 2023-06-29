@@ -15,6 +15,7 @@ from datetime import date
 import joblib
 from keras.models import load_model
 import numpy as np
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, roc_auc_score, accuracy_score
 
 segmentos = []
 
@@ -57,7 +58,7 @@ with open('../models/Model4/trained_model.pkl', 'rb') as f:
 # Interfaz de usuario con Streamlit
 st.title("Detección de fraude con tarjeta de crédito")
 
-menu = st.sidebar.selectbox("Seleccionamos la página", ['Home','Análisis de datos exploratorio', 'Análisis procesamiento de datos', 'Modelo de predicción', 'Todos los modelos de predicción'])
+menu = st.sidebar.selectbox("Seleccionamos la página", ['Home','Análisis de datos exploratorio', 'Análisis procesamiento de datos', 'Modelo de predicción', 'Todos los modelos de predicción', 'Evaluación de modelos de predicción'])
 
 if menu == "Home":
     st.markdown("En esta app, podrás probar un modelo de Machine Learning que ayudaría a dar solución en tiempo real a un problema del sector de la banca que va en aumento mientras la tecnología avanza a un ritmo frenético.")
@@ -169,28 +170,25 @@ if menu == "Análisis de datos exploratorio":
 
     tab6, tab7, tab8 = st.tabs(['Distribución fraudes por categoría de comercio','Distribución de fraudes por género','Distribución de fraude por estado'])
     with tab6:
-        # Crear la gráfica dinámica con plotly
+    # Crear la gráfica dinámica con plotly
         fig = px.histogram(df_balanced, x="category", color="is_fraud", barmode="group",
                             color_discrete_map={0: "#34D399", 1: "#EF4444"},
                             labels={"category": "Categoría", "count": "Conteo", "is_fraud": "Fraude"})
 
-        # Actualizar las etiquetas de la leyenda
-        fig.update_traces(
-            name=["No Fraude", "Fraude"],
-            legendtitle_text="Estado",
-            patch={"line": {"color": "black", "width": 1}},
-            selector={"legendgroup": True}
-        )
-
-        # Actualizar las etiquetas en el eje de color
-        fig.for_each_trace(lambda t: t.update(name="No Fraude" if t.name == "0" else "Fraude"))
-
-        # Configurar el título y las etiquetas de los ejes
+        # Configurar el tamaño del gráfico y las propiedades de diseño
         fig.update_layout(
             title_text="Distribución de Categorías de Transacciones",
             xaxis_title="Categoría",
-            yaxis_title="Conteo"
+            yaxis_title="Conteo",
+            bargap=0.1,  # Espacio entre las barras
+            autosize=False,
+            width=800,   # Ancho del gráfico
+            height=500   # Altura del gráfico
         )
+
+        # Rotar las etiquetas del eje x para que sean legibles
+        fig.update_layout(xaxis={'tickangle': 45})
+
         st.plotly_chart(fig, use_container_width=True)
     with tab7:
         # Crear la gráfica dinámica con plotly
@@ -215,7 +213,7 @@ if menu == "Análisis de datos exploratorio":
             yaxis_title="Conteo"
         )
         st.plotly_chart(fig, use_container_width=True)
-    
+
     with tab8:
         # Crear la gráfica dinámica con plotly
         fig = px.histogram(df_balanced, x="state", color="is_fraud", barmode="group", color_discrete_map={0: "#34D399", 1: "#EF4444"},
@@ -364,6 +362,8 @@ if menu == 'Análisis procesamiento de datos':
         st.plotly_chart(fig, use_container_width=True)
 
     tab12, tab13= st.tabs(['Nuevas correlaciones no balanceado','Nuevas correlaciones balanceado'])
+
+    segmentos = []
     data_dir = os.path.abspath(os.path.join(os.getcwd(), '..', 'data', 'processed'))
 
     # Leer los archivos CSV segmentados y almacenarlos en la lista
@@ -600,3 +600,77 @@ if menu == 'Todos los modelos de predicción':
     st.markdown("Puedes consultar en la siguiente tabla la población de cada ciudad:")
     df = pd.read_csv("city_pop.csv")
     st.dataframe(df)
+
+if menu == 'Evaluación modelos de predicción':
+    # Leer el archivo CSV de prueba
+    df = pd.read_csv("../data/test/test.csv")
+
+    # Obtener las características de prueba (X_test) y las etiquetas de prueba (y_test)
+    X_test = df[['amt', 'city_pop', 'distancia', 'fraudes_por_Categoria',
+        'fraudes_por_estado', 'fraudes_por_edad', 'fraudes_por_hora',
+        'fraudes_por_día']]
+    y_test = df['is_fraud']
+    # Obtener la ruta absoluta de la carpeta padre
+    parent_folder = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+
+    # Mapeo de nombres de modelo a tipos de modelo
+    model_types = {
+        "Model1": "RandomForestClassifier",
+        "Model2": "GradientBoostingClassifier",
+        "Model3": "KNeighborsClassifier",
+        "Model4": "XGBClassifier",
+        "Model5": "LogisticRegressionClassifier",
+        "Model6": "SVC",
+        "Model7": "RandomForestClassifier con PCA",
+        "Model8": "Sequential de Keras"
+    }
+
+    # Obtener la lista de subcarpetas de la carpeta "models"
+    model_folders = [folder for folder in os.listdir(os.path.join(parent_folder, "models")) if os.path.isdir(os.path.join(parent_folder, "models", folder))]
+
+    # Crear una lista de nombres de tipos de modelo
+    model_types_list = [model_types[folder] for folder in model_folders]
+
+    # Selector de tipo de modelo
+    selected_model_type = st.selectbox("Seleccione el tipo de modelo:", model_types_list)
+
+    # Obtener el nombre de la carpeta del modelo seleccionado
+    selected_model_folder = [folder for folder, model_type in model_types.items() if model_type == selected_model_type][0]
+
+    # Obtener la ruta del modelo seleccionado
+    model_path = os.path.join(parent_folder, "models", selected_model_folder, "trained_model.pkl" if selected_model_folder != "Model8" else "trained_model.h5")
+
+    # Cargar el modelo correspondiente
+    if selected_model_folder != "Model8":
+        modelo_cargado = joblib.load(model_path)
+    else:
+        modelo_cargado = load_model(model_path)
+
+    # Realizar predicciones utilizando el modelo cargado
+    predictions = modelo_cargado.predict(X_test)
+
+    # Redondear la predicción si es un modelo Sequential de Keras (Model8)
+    if selected_model_folder == "Model8":
+        predictions = np.round(resultado_prediccion)
+
+    # Calcular la matriz de confusión
+    c_matrix = confusion_matrix(y_test, predictions)
+    st.write("Matriz de confusión:")
+    st.dataframe(pd.DataFrame(c_matrix))
+
+    # Mostrar la matriz de confusión como un mapa de calor
+    plt.figure(figsize=(10, 10))
+    sns.heatmap(c_matrix, annot=True)
+    plt.title("Matriz de confusión para " + selected_model_folder)
+    st.pyplot(plt)
+
+    # Calcular y mostrar las métricas de evaluación
+    accuracy = accuracy_score(y_test, predictions)
+    precision = precision_score(y_test, predictions)
+    recall = recall_score(y_test, predictions)
+    roc_auc = roc_auc_score(y_test, predictions)
+
+    st.write("Accuracy score:", accuracy)
+    st.write("Precision score:", precision)
+    st.write("Recall score:", recall)
+    st.write("ROC AUC score:", roc_auc)

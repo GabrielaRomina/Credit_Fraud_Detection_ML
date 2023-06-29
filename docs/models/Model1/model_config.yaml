@@ -1,6 +1,0 @@
-classifier__class_weight:
-  0: 1
-  1: 50
-classifier__max_depth: 15
-scaler: null
-selectkbest__k: 6

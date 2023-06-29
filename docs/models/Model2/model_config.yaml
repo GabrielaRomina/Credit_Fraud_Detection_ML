@@ -1,5 +1,0 @@
-classifier__learning_rate: 0.01
-classifier__loss: exponential
-classifier__max_depth: 16
-classifier__max_features: 4
-selectkbest__k: 7
