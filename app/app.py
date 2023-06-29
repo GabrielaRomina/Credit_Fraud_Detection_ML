@@ -431,7 +431,7 @@ if menu == "Modelo de predicción":
                          'kids_pets', 'home')
     categoria = st.selectbox("Seleccione la categoría del comercio:", categoria_options)
 
-    cat = pd.read_csv("categoria.csv")
+    cat = pd.read_csv("data/categoria.csv")
     fraudes_por_Categoria = cat.loc[cat['category'] == categoria, 'fraudes_por_Categoria'].iloc[0]
 
     state_options = ('NC', 'WA', 'ID', 'MT', 'VA', 'PA', 'KS', 'TN', 'IA', 'WV', 'FL',
@@ -441,7 +441,7 @@ if menu == "Modelo de predicción":
                      'NH', 'SD', 'AK', 'ND', 'CT', 'RI', 'DE')
     estado = st.selectbox("Seleccione el estado:", state_options)
 
-    state = pd.read_csv("estado.csv")
+    state = pd.read_csv("data/estado.csv")
     fraudes_por_estado = state.loc[state['state'] == estado, 'fraudes_por_estado'].iloc[0]
 
     # Obtener la fecha y hora de transacción bancaria y la fecha de nacimiento
@@ -453,7 +453,7 @@ if menu == "Modelo de predicción":
     dob = st.date_input("Fecha de Nacimiento", min_value=default_start_date)
     age = relativedelta(trans_date, dob).years
     
-    edad = pd.read_csv("edad.csv")
+    edad = pd.read_csv("data/edad.csv")
     fraudes_por_edad = 0  # Valor predeterminado si no se encuentra una coincidencia
 
     if int(age) in edad['age'].values:
@@ -461,11 +461,11 @@ if menu == "Modelo de predicción":
 
     hora = st.time_input("Hora de la transacción")
     hour = hora.hour
-    h = pd.read_csv("hora.csv")
+    h = pd.read_csv("data/hora.csv")
     fraudes_por_hora = h.loc[h['hour'] == int(hour), 'fraudes_por_hora'].values[0]
 
     dia = trans_date.day
-    day = pd.read_csv("dia.csv")
+    day = pd.read_csv("data/dia.csv")
     fraudes_por_dia = day.loc[day['day_of_month'] == int(dia), 'fraudes_por_día'].values[0]
 
     data = {
@@ -491,7 +491,7 @@ if menu == "Modelo de predicción":
     st.write('El resultado de la predicción es:', etiqueta_prediccion)
 
     st.markdown("Puedes consultar en la siguiente tabla la población de cada ciudad:")
-    df = pd.read_csv("city_pop.csv")
+    df = pd.read_csv("data/city_pop.csv")
     st.dataframe(df)
 
 
@@ -546,7 +546,7 @@ if menu == 'Todos los modelos de predicción':
                          'kids_pets', 'home')
     categoria = st.selectbox("Seleccione la categoría del comercio:", categoria_options)
 
-    cat = pd.read_csv("categoria.csv")
+    cat = pd.read_csv("data/categoria.csv")
     fraudes_por_Categoria = cat.loc[cat['category'] == categoria, 'fraudes_por_Categoria'].iloc[0]
 
     state_options = ('NC', 'WA', 'ID', 'MT', 'VA', 'PA', 'KS', 'TN', 'IA', 'WV', 'FL',
@@ -556,7 +556,7 @@ if menu == 'Todos los modelos de predicción':
                      'NH', 'SD', 'AK', 'ND', 'CT', 'RI', 'DE')
     estado = st.selectbox("Seleccione el estado:", state_options)
 
-    state = pd.read_csv("estado.csv")
+    state = pd.read_csv("data/estado.csv")
     fraudes_por_estado = state.loc[state['state'] == estado, 'fraudes_por_estado'].iloc[0]
 
     # Obtener la fecha y hora de transacción bancaria y la fecha de nacimiento
@@ -568,7 +568,7 @@ if menu == 'Todos los modelos de predicción':
     dob = st.date_input("Fecha de Nacimiento", min_value=default_start_date)
     age = relativedelta(trans_date, dob).years
     
-    edad = pd.read_csv("edad.csv")
+    edad = pd.read_csv("../data/edad.csv")
     fraudes_por_edad = 0  # Valor predeterminado si no se encuentra una coincidencia
 
     if int(age) in edad['age'].values:
@@ -576,11 +576,11 @@ if menu == 'Todos los modelos de predicción':
 
     hora = st.time_input("Hora de la transacción")
     hour = hora.hour
-    h = pd.read_csv("hora.csv")
+    h = pd.read_csv("data/hora.csv")
     fraudes_por_hora = h.loc[h['hour'] == int(hour), 'fraudes_por_hora'].values[0]
 
     dia = trans_date.day
-    day = pd.read_csv("dia.csv")
+    day = pd.read_csv("data/dia.csv")
     fraudes_por_dia = day.loc[day['day_of_month'] == int(dia), 'fraudes_por_día'].values[0]
 
     data = {
@@ -610,7 +610,7 @@ if menu == 'Todos los modelos de predicción':
     st.write('El resultado de la predicción es:', etiqueta_prediccion)
 
     st.markdown("Puedes consultar en la siguiente tabla la población de cada ciudad:")
-    df = pd.read_csv("city_pop.csv")
+    df = pd.read_csv("data/city_pop.csv")
     st.dataframe(df)
 
 if menu == 'Evaluación de modelos de predicción':
