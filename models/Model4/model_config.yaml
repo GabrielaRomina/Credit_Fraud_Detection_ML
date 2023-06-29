@@ -1,0 +1,3 @@
+classifier__learning_rate: 0.1
+classifier__max_delta_step: 5
+classifier__max_depth: 10

@@ -1,0 +1,5 @@
+classifier__class_weight:
+  0: 1
+  1: 50
+classifier__max_depth: 15
+pca__n_components: 7

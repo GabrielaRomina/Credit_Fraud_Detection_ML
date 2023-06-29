@@ -29,7 +29,7 @@ df1['distancia'] = df1.apply(fc.calcular_distancia, axis=1)
 # Generar columna con la hora (del 0 al 23) de la transacción
 df1["hour"] = df1["trans_date_trans_time"].dt.hour
 
-# Generar columna con el día de la semana (del 1 al 7) de la transacción
+# Generar columna con el día de la semana (del 1 acdl 7) de la transacción
 df1["day_of_week"] = df1["trans_date_trans_time"].dt.dayofweek + 1
 
 # Generar columna con el día del mes (del 1 al 31) de la transacción
@@ -76,6 +76,7 @@ fraudes_por_dia = df1[df1["is_fraud"] == 1].groupby("day_of_month")["is_fraud"].
 
 # Calcular los pesos de cada hora en función de la suma de fraudes
 valor_dia = fraudes_por_dia / total_fraudes
+df1["fraudes_por_edad"].fillna(df1["fraudes_por_edad"].mean(), inplace=True)
 
 # Crear una nueva columna llamada "peso_hora" utilizando la función map()
 df1["fraudes_por_día"] = df1["day_of_month"].map(valor_dia)
@@ -86,6 +87,7 @@ df1.drop(['trans_date_trans_time', 'cc_num', 'merchant', 'category',
        'long', 'job', 'dob', 'trans_num', 'unix_time', 'merch_lat',
        'merch_long', 'age', 'hour', 'day_of_week', 'day_of_month'], inplace=True, axis=1)
 
+print(df1.info())
 segmentos = []
 
 segmentos = np.array_split(df1, 3)

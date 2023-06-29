@@ -7,15 +7,16 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score,roc_au
 
 # Cargar el modelo entrenado desde el archivo pickle
 
-with open('../models/trained_model.pkl', 'rb') as archivo_entrada:
+with open('../models/Model4/trained_model.pkl', 'rb') as archivo_entrada:
     model = pickle.load(archivo_entrada)
 
 # Leer el archivo CSV de prueba
 df = pd.read_csv("../data/test/test.csv")
 
 # Obtener las características de prueba (X_test) y las etiquetas de prueba (y_test)
-X_test = df[['amt', 'city_pop', 'age', 'distancia', 'day_of_week',
-             'fraudes_por_Categoria', 'fraudes_por_estado', 'fraudes_por_hora']]
+X_test = df[['amt', 'city_pop', 'distancia', 'fraudes_por_Categoria',
+       'fraudes_por_estado', 'fraudes_por_edad', 'fraudes_por_hora',
+       'fraudes_por_día']]
 y_test = df['is_fraud']
 
 # Realizar predicciones utilizando el modelo cargado

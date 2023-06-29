@@ -1,0 +1,9 @@
+classifier__C: 10.0
+classifier__class_weight: null
+classifier__kernel: rbf
+scaler: !!python/object:sklearn.preprocessing._data.StandardScaler
+  _sklearn_version: 1.2.2
+  copy: true
+  with_mean: true
+  with_std: true
+selectkbest__k: 3
