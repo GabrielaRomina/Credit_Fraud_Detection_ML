@@ -3,7 +3,7 @@
 Este repositorio contiene un modelo de clasificación desarrollado para detectar fraudes bancarios utilizando técnicas de aprendizaje automático. El modelo se ha entrenado utilizando un conjunto de datos de transacciones bancarias etiquetadas como fraudulentas o no fraudulentas.
 
 # Conjunto de datos
-El conjunto de datos utilizado para entrenar y evaluar el modelo consiste en una colección de transacciones bancarias históricas (faker). Cada transacción está representada por una serie de atributos, como el importe, la ubicación geográfica, el tipo de transacción, entre otros. Además, cada transacción está etiquetada como "fraude" o "no fruade", lo que permite al modelo aprender a distinguir entre transacciones legítimas y fraudulentas.
+El conjunto de datos utilizado para entrenar y evaluar el modelo consiste en una colección de transacciones bancarias históricas (faker). Cada transacción está representada por una serie de atributos, como el importe, la ubicación geográfica, el fecha y hora de transacción, entre otros. Además, cada transacción está etiquetada como "fraude" o "no fruade", lo que permite al modelo aprender a distinguir entre transacciones legítimas y fraudulentas.
 
 # Entrenamiento del modelo
 El modelo se ha entrenado utilizando una combinación de técnicas de aprendizaje automático, específicamente utilizando algoritmos de clasificación. Se han aplicado preprocesamientos y transformaciones a los datos antes de entrenar el modelo, como la normalización de los atributos numéricos y la codificación de los atributos categóricos, además de obtención de nuevas variables por procesamiento de datos.
