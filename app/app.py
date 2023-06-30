@@ -568,7 +568,7 @@ if menu == 'Todos los modelos de predicción':
     dob = st.date_input("Fecha de Nacimiento", min_value=default_start_date)
     age = relativedelta(trans_date, dob).years
     
-    edad = pd.read_csv("../data/edad.csv")
+    edad = pd.read_csv("data/edad.csv")
     fraudes_por_edad = 0  # Valor predeterminado si no se encuentra una coincidencia
 
     if int(age) in edad['age'].values:
